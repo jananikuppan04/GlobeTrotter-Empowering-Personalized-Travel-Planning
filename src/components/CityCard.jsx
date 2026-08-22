@@ -6,7 +6,7 @@ export default function CityCard({ city, isSaved, onToggleSave, onAddToTrip, onC
   const formattedDailyCost = db.formatCurrency(city.avgDailyCost);
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden group flex flex-col justify-between border border-gray-800/80 hover:border-sky-500/40 transition-all duration-300">
+    <div className="glass-card rounded-2xl overflow-hidden group flex flex-col justify-between border border-[var(--border-color)] hover:border-sky-500/40 transition-all duration-300 shadow-md">
       
       {/* Cover Image */}
       <div className="relative h-48 w-full overflow-hidden bg-gray-900 cursor-pointer" onClick={() => onClickDetail?.(city)}>
@@ -15,7 +15,7 @@ export default function CityCard({ city, isSaved, onToggleSave, onAddToTrip, onC
           alt={city.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent opacity-80" />
 
         {/* Save Bookmark */}
         <button
@@ -40,12 +40,12 @@ export default function CityCard({ city, isSaved, onToggleSave, onAddToTrip, onC
         </div>
 
         {/* Bottom Details Overlay */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+        <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between text-white">
           <div>
             <span className="text-[11px] font-bold text-sky-400 uppercase tracking-wider block">
               {city.country} • {city.region}
             </span>
-            <h3 className="text-xl font-extrabold text-white leading-tight">
+            <h3 className="text-xl font-extrabold leading-tight">
               {city.name}
             </h3>
           </div>
@@ -59,7 +59,7 @@ export default function CityCard({ city, isSaved, onToggleSave, onAddToTrip, onC
 
       {/* Body Info */}
       <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
-        <p className="text-xs text-gray-300 line-clamp-2">
+        <p className="text-xs text-[var(--text-secondary)] line-clamp-2">
           {city.description}
         </p>
 
@@ -68,7 +68,7 @@ export default function CityCard({ city, isSaved, onToggleSave, onAddToTrip, onC
           {city.tags?.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-gray-800 text-gray-300 border border-gray-700/50"
+              className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[var(--bg-input)] text-[var(--text-secondary)] border border-[var(--border-color)]"
             >
               #{tag}
             </span>
@@ -76,9 +76,9 @@ export default function CityCard({ city, isSaved, onToggleSave, onAddToTrip, onC
         </div>
 
         {/* Footer info & CTA */}
-        <div className="pt-3 border-t border-gray-800/80 flex items-center justify-between gap-2">
+        <div className="pt-3 border-t border-[var(--border-color)] flex items-center justify-between gap-2">
           <div>
-            <span className="text-[10px] uppercase font-bold text-gray-400 block">Avg Daily Cost</span>
+            <span className="text-[10px] uppercase font-bold text-[var(--text-muted)] block">Avg Daily Cost</span>
             <span className="text-sm font-bold text-emerald-400">{formattedDailyCost} / day</span>
           </div>
 

@@ -17,6 +17,7 @@ import { db } from './db/store';
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [activeTripId, setActiveTripId] = useState(null);
+  const [theme, setTheme] = useState(db.getTheme());
   
   // Modals
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -24,12 +25,23 @@ export default function App() {
   const [createTripInitialCityId, setCreateTripInitialCityId] = useState(null);
 
   useEffect(() => {
+    // Sync theme with body element
+    document.body.className = `${db.getTheme()}-theme min-h-screen font-sans transition-colors duration-300`;
+
+    const unsubscribe = db.subscribe(() => {
+      const currentTheme = db.getTheme();
+      setTheme(currentTheme);
+      document.body.className = `${currentTheme}-theme min-h-screen font-sans transition-colors duration-300`;
+    });
+
     // Check for shared URL query param
     const params = new URLSearchParams(window.location.search);
     const shareId = params.get('share');
     if (shareId) {
       setActiveTab('community');
     }
+
+    return unsubscribe;
   }, []);
 
   const handleOpenCreateTrip = (initialCityId = null) => {
@@ -59,7 +71,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-gray-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className={`min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white ${theme}-theme`}>
       
       {/* Top Navigation */}
       <Navbar
@@ -156,9 +168,9 @@ export default function App() {
       />
 
       {/* Footer */}
-      <footer className="bg-gray-950 border-t border-gray-800/80 py-8 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500 space-y-2">
-          <p className="font-bold text-gray-400">GlobeTrotter — Empowering Personalized Travel Planning</p>
+      <footer className="bg-[var(--bg-surface)] border-t border-[var(--border-color)] py-8 mt-auto transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 text-center text-xs text-[var(--text-muted)] space-y-2">
+          <p className="font-bold text-[var(--text-secondary)]">GlobeTrotter — Empowering Personalized Travel Planning</p>
           <p>© 2026 GlobeTrotter Inc. Crafted for multi-city travel excellence.</p>
         </div>
       </footer>

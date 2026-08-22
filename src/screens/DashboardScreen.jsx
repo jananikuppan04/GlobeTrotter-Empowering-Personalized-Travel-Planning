@@ -65,18 +65,18 @@ export default function DashboardScreen({
     <div className="space-y-10 pb-16">
       
       {/* Hero Banner with Search */}
-      <div className="relative rounded-3xl overflow-hidden border border-gray-800/80 shadow-2xl bg-gray-900">
+      <div className="relative rounded-3xl overflow-hidden border border-[var(--border-color)] shadow-2xl bg-gray-950">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80"
             alt="Travel Hero"
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0b0f19] via-[#0b0f19]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/80 to-transparent" />
         </div>
 
         <div className="relative z-10 p-8 sm:p-12 lg:p-16 max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 backdrop-blur-md">
             <Sparkles className="w-4 h-4 text-indigo-400" />
             <span>Welcome back, {user?.firstName || 'Traveler'}!</span>
           </div>
@@ -86,7 +86,7 @@ export default function DashboardScreen({
             <span className="gradient-text">Your Next World Journey</span>
           </h1>
 
-          <p className="text-sm sm:text-base text-gray-300">
+          <p className="text-sm sm:text-base text-gray-200 font-medium">
             Build multi-city day-by-day itineraries, estimate real-time trip costs, organize activities, and share memorable journeys with a global community.
           </p>
 
@@ -99,7 +99,7 @@ export default function DashboardScreen({
                 placeholder="Search cities, countries (e.g. Paris, Japan)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-gray-950/80 backdrop-blur-md border border-gray-700/70 rounded-xl text-sm text-white focus:border-indigo-500 focus:outline-none"
+                className="w-full pl-12 pr-4 py-3 bg-gray-950/90 backdrop-blur-md border border-gray-700/80 rounded-xl text-sm text-white focus:border-indigo-500 focus:outline-none shadow-lg"
               />
             </div>
 
@@ -116,45 +116,45 @@ export default function DashboardScreen({
 
       {/* Metric Highlights */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+        <div className="glass-panel p-5 rounded-2xl border border-[var(--border-color)] flex items-center gap-4 shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center">
             <Globe className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-2xl font-black text-white">{userTrips.length}</p>
-            <p className="text-xs text-gray-400 font-medium">My Planned Trips</p>
+            <p className="text-2xl font-black text-[var(--text-primary)]">{userTrips.length}</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">My Planned Trips</p>
           </div>
         </div>
 
-        <div className="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+        <div className="glass-panel p-5 rounded-2xl border border-[var(--border-color)] flex items-center gap-4 shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 border border-sky-500/30 flex items-center justify-center">
             <MapPin className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-2xl font-black text-white">{destinations.length}</p>
-            <p className="text-xs text-gray-400 font-medium">Global Cities</p>
+            <p className="text-2xl font-black text-[var(--text-primary)]">{destinations.length}</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">Global Cities</p>
           </div>
         </div>
 
-        <div className="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+        <div className="glass-panel p-5 rounded-2xl border border-[var(--border-color)] flex items-center gap-4 shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-2xl font-black text-white">
+            <p className="text-2xl font-black text-[var(--text-primary)]">
               {db.formatCurrency(userTrips.reduce((acc, t) => acc + (t.totalBudget || 0), 0))}
             </p>
-            <p className="text-xs text-gray-400 font-medium">Budget Managed</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">Budget Managed</p>
           </div>
         </div>
 
-        <div className="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center gap-4">
+        <div className="glass-panel p-5 rounded-2xl border border-[var(--border-color)] flex items-center gap-4 shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
             <Users className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-2xl font-black text-white">24</p>
-            <p className="text-xs text-gray-400 font-medium">Community Shares</p>
+            <p className="text-2xl font-black text-[var(--text-primary)]">24</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">Community Shares</p>
           </div>
         </div>
       </div>
@@ -163,16 +163,16 @@ export default function DashboardScreen({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
-              <Compass className="w-5 h-5 text-indigo-400" />
+            <h2 className="text-xl font-extrabold text-[var(--text-primary)] flex items-center gap-2">
+              <Compass className="w-5 h-5 text-indigo-500" />
               <span>Your Recent Trips</span>
             </h2>
-            <p className="text-xs text-gray-400">Continue building your day-by-day itineraries</p>
+            <p className="text-xs text-[var(--text-muted)]">Continue building your day-by-day itineraries</p>
           </div>
 
           <button
             onClick={() => setActiveTab('my-trips')}
-            className="flex items-center gap-1 text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="flex items-center gap-1 text-xs font-bold text-indigo-500 hover:text-indigo-600 transition-colors"
           >
             <span>View All ({userTrips.length})</span>
             <ArrowRight className="w-4 h-4" />
@@ -193,9 +193,9 @@ export default function DashboardScreen({
             ))}
           </div>
         ) : (
-          <div className="p-8 text-center glass-panel rounded-2xl border border-gray-800 space-y-3">
+          <div className="p-8 text-center glass-panel rounded-2xl border border-[var(--border-color)] space-y-3">
             <Compass className="w-12 h-12 text-indigo-400 mx-auto opacity-60" />
-            <p className="text-sm font-semibold text-gray-300">No trips planned yet!</p>
+            <p className="text-sm font-semibold text-[var(--text-secondary)]">No trips planned yet!</p>
             <button
               onClick={() => onOpenCreateTrip()}
               className="px-4 py-2 rounded-xl text-xs font-bold text-white gradient-bg"
@@ -210,16 +210,16 @@ export default function DashboardScreen({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
+            <h2 className="text-xl font-extrabold text-[var(--text-primary)] flex items-center gap-2">
               <MapPin className="w-5 h-5 text-sky-400" />
               <span>Top Regional Selections</span>
             </h2>
-            <p className="text-xs text-gray-400">Handpicked global cities with average daily cost indexes</p>
+            <p className="text-xs text-[var(--text-muted)]">Handpicked global cities with average daily cost indexes</p>
           </div>
 
           <button
             onClick={() => setActiveTab('cities')}
-            className="flex items-center gap-1 text-xs font-bold text-sky-400 hover:text-sky-300 transition-colors"
+            className="flex items-center gap-1 text-xs font-bold text-sky-500 hover:text-sky-600 transition-colors"
           >
             <span>Explore All Cities</span>
             <ArrowRight className="w-4 h-4" />
@@ -244,16 +244,16 @@ export default function DashboardScreen({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
+            <h2 className="text-xl font-extrabold text-[var(--text-primary)] flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-400" />
               <span>Featured Experiences & Activities</span>
             </h2>
-            <p className="text-xs text-gray-400">Enrich your journey with top-rated local activities</p>
+            <p className="text-xs text-[var(--text-muted)]">Enrich your journey with top-rated local activities</p>
           </div>
 
           <button
             onClick={() => setActiveTab('activities')}
-            className="flex items-center gap-1 text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors"
+            className="flex items-center gap-1 text-xs font-bold text-amber-500 hover:text-amber-600 transition-colors"
           >
             <span>Browse Activity Library</span>
             <ArrowRight className="w-4 h-4" />

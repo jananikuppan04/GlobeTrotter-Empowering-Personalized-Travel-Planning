@@ -16,6 +16,8 @@ import {
   DollarSign,
   Briefcase,
   Bookmark,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { db } from '../db/store';
 import { CURRENCIES } from '../db/schema';
@@ -23,17 +25,22 @@ import { CURRENCIES } from '../db/schema';
 export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpenCreateTrip }) {
   const [currentUser, setCurrentUser] = useState(db.getCurrentUser());
   const [activeCurrency, setActiveCurrency] = useState(db.getActiveCurrency());
-  const [searchQuery, setSearchQuery] = useState('');
+  const [theme, setTheme] = useState(db.getTheme());
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = db.subscribe(() => {
       setCurrentUser(db.getCurrentUser());
       setActiveCurrency(db.getActiveCurrency());
+      setTheme(db.getTheme());
     });
     return unsubscribe;
   }, []);
+
+  const handleToggleTheme = () => {
+    const newTheme = db.toggleTheme();
+    setTheme(newTheme);
+  };
 
   const handleCurrencyChange = (e) => {
     db.setCurrency(e.target.value);
@@ -62,13 +69,13 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0b0f19]/90 backdrop-blur-md border-b border-gray-800/80">
+    <header className="sticky top-0 z-40 bg-[var(--nav-bg)] backdrop-blur-md border-b border-[var(--border-color)] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           
           {/* Brand Logo */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
-            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg shadow-indigo-500/25">
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setActiveTab('dashboard')}>
+            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
               <Globe className="w-6 h-6 text-white animate-pulse" />
             </div>
             <div>
@@ -80,7 +87,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-gray-900/60 p-1.5 rounded-xl border border-gray-800">
+          <nav className="hidden lg:flex items-center gap-1 bg-[var(--bg-input)] p-1.5 rounded-xl border border-[var(--border-color)] shadow-inner">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -88,12 +95,12 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
                     isActive
                       ? item.highlight
-                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                        ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-sm'
                         : 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-800/60'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)]'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -104,27 +111,40 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
           </nav>
 
           {/* Right Action Bar */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             
             {/* Create Trip CTA */}
             <button
               onClick={onOpenCreateTrip}
-              className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-white gradient-bg hover:opacity-90 transition-all shadow-md shadow-indigo-500/20 active:scale-95"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold text-white gradient-bg hover:opacity-90 transition-all shadow-md shadow-indigo-500/25 active:scale-95"
             >
               <PlusCircle className="w-4 h-4" />
               <span className="hidden sm:inline">Plan New Trip</span>
             </button>
 
+            {/* Theme Toggle Button */}
+            <button
+              onClick={handleToggleTheme}
+              className="flex items-center justify-center p-2 rounded-xl bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-indigo-500 transition-all"
+              title={`Switch to ${theme === 'dark' ? 'Light Luxe' : 'Dark Slate'} Theme`}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400 animate-spin-slow" />
+              ) : (
+                <Moon className="w-4 h-4 text-indigo-500" />
+              )}
+            </button>
+
             {/* Currency Selector */}
-            <div className="relative hidden sm:flex items-center bg-gray-900/80 border border-gray-800 rounded-lg px-2 py-1 text-xs">
-              <span className="text-gray-400 font-semibold mr-1">{activeCurrency.symbol}</span>
+            <div className="relative hidden sm:flex items-center bg-[var(--bg-input)] border border-[var(--border-color)] rounded-xl px-2 py-1 text-xs">
+              <span className="text-[var(--text-muted)] font-semibold mr-1">{activeCurrency.symbol}</span>
               <select
                 value={activeCurrency.code}
                 onChange={handleCurrencyChange}
-                className="bg-transparent text-gray-200 font-medium focus:outline-none cursor-pointer text-xs"
+                className="bg-transparent text-[var(--text-primary)] font-semibold focus:outline-none cursor-pointer text-xs"
               >
                 {Object.values(CURRENCIES).map((c) => (
-                  <option key={c.code} value={c.code} className="bg-gray-900 text-gray-200">
+                  <option key={c.code} value={c.code} className="bg-[var(--bg-surface)] text-[var(--text-primary)]">
                     {c.code}
                   </option>
                 ))}
@@ -136,7 +156,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
               <div className="relative">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-gray-800/60 transition-colors border border-transparent hover:border-gray-800"
+                  className="flex items-center gap-2 p-1 rounded-xl hover:bg-[var(--bg-card)] transition-colors border border-transparent hover:border-[var(--border-color)]"
                 >
                   <img
                     src={currentUser.avatar}
@@ -144,22 +164,22 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                     className="w-8 h-8 rounded-full object-cover ring-2 ring-indigo-500/50"
                   />
                   <div className="hidden md:block text-left">
-                    <p className="text-xs font-semibold text-gray-200 truncate max-w-[100px]">
+                    <p className="text-xs font-bold text-[var(--text-primary)] truncate max-w-[100px]">
                       {currentUser.name}
                     </p>
-                    <p className="text-[10px] text-gray-400 capitalize">{currentUser.role}</p>
+                    <p className="text-[10px] text-[var(--text-muted)] capitalize">{currentUser.role}</p>
                   </div>
-                  <ChevronDown className="w-3.5 h-3.5 text-gray-400 hidden md:block" />
+                  <ChevronDown className="w-3.5 h-3.5 text-[var(--text-muted)] hidden md:block" />
                 </button>
 
                 {/* Dropdown Menu */}
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                    <div className="px-4 py-2 border-b border-gray-800">
-                      <p className="text-xs font-bold text-white">{currentUser.name}</p>
-                      <p className="text-[11px] text-gray-400 truncate">{currentUser.email}</p>
+                  <div className="absolute right-0 mt-2 w-56 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in duration-150">
+                    <div className="px-4 py-2 border-b border-[var(--border-color)]">
+                      <p className="text-xs font-bold text-[var(--text-primary)]">{currentUser.name}</p>
+                      <p className="text-[11px] text-[var(--text-muted)] truncate">{currentUser.email}</p>
                       <div className="mt-1 flex items-center gap-1.5">
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${currentUser.role === 'admin' ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-300'}`}>
+                        <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${currentUser.role === 'admin' ? 'bg-amber-500/20 text-amber-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
                           {currentUser.role.toUpperCase()}
                         </span>
                       </div>
@@ -171,7 +191,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                           setActiveTab('profile');
                           setIsProfileMenuOpen(false);
                         }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-gray-300 hover:bg-gray-800 hover:text-white"
+                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]"
                       >
                         <User className="w-4 h-4 text-indigo-400" />
                         <span>My Profile & Settings</span>
@@ -182,44 +202,43 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                           setActiveTab('my-trips');
                           setIsProfileMenuOpen(false);
                         }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-gray-300 hover:bg-gray-800 hover:text-white"
+                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]"
                       >
                         <Briefcase className="w-4 h-4 text-sky-400" />
                         <span>My Saved Trips</span>
                       </button>
 
-                      {/* Demo Quick Switchers */}
-                      <div className="px-4 py-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-                        Quick Demo Accounts
+                      <div className="px-4 py-1.5 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
+                        Quick Demo Switcher
                       </div>
                       <button
                         onClick={() => handleQuickDemoSwitch('user')}
                         className={`w-full flex items-center justify-between px-4 py-1.5 text-xs ${
-                          currentUser.role === 'user' ? 'text-indigo-400 font-semibold' : 'text-gray-400 hover:text-white'
+                          currentUser.role === 'user' ? 'text-indigo-400 font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                         }`}
                       >
-                        <span>Switch to Demo Traveler</span>
+                        <span>Demo Traveler</span>
                         {currentUser.role === 'user' && <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>}
                       </button>
                       <button
                         onClick={() => handleQuickDemoSwitch('admin')}
                         className={`w-full flex items-center justify-between px-4 py-1.5 text-xs ${
-                          currentUser.role === 'admin' ? 'text-amber-400 font-semibold' : 'text-gray-400 hover:text-white'
+                          currentUser.role === 'admin' ? 'text-amber-400 font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                         }`}
                       >
-                        <span>Switch to Demo Admin</span>
+                        <span>Demo Admin</span>
                         {currentUser.role === 'admin' && <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>}
                       </button>
                     </div>
 
-                    <div className="border-t border-gray-800 pt-1">
+                    <div className="border-t border-[var(--border-color)] pt-1">
                       <button
                         onClick={() => {
                           db.setCurrentUser(null);
                           onOpenAuthModal();
                           setIsProfileMenuOpen(false);
                         }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10"
+                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-rose-400 hover:bg-rose-500/10 font-bold"
                       >
                         <LogOut className="w-4 h-4" />
                         <span>Sign Out</span>
@@ -231,16 +250,16 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
             ) : (
               <button
                 onClick={onOpenAuthModal}
-                className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-white transition-colors"
+                className="px-4 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shadow-md"
               >
-                Sign In / Register
+                Sign In
               </button>
             )}
           </div>
         </div>
 
         {/* Mobile Navigation Row */}
-        <div className="flex lg:hidden overflow-x-auto py-2 gap-1 no-scrollbar border-t border-gray-800/50">
+        <div className="flex lg:hidden overflow-x-auto py-2 gap-1.5 no-scrollbar border-t border-[var(--border-color)]">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -248,10 +267,10 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold whitespace-nowrap ${
                   isActive
                     ? 'bg-indigo-600 text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)]'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />

@@ -48,7 +48,25 @@ class DatabaseStore {
       savedDestinations: ['dest_paris', 'dest_tokyo'],
       currentUserId: 'usr_demo_1', // default demo user
       activeCurrency: 'USD',
+      theme: 'dark', // 'dark' | 'light'
     };
+  }
+
+  getTheme() {
+    return this.state.theme || 'dark';
+  }
+
+  setTheme(theme) {
+    if (theme === 'dark' || theme === 'light') {
+      this.state.theme = theme;
+      this.saveToStorage();
+    }
+  }
+
+  toggleTheme() {
+    this.state.theme = this.state.theme === 'light' ? 'dark' : 'light';
+    this.saveToStorage();
+    return this.state.theme;
   }
 
   saveToStorage() {

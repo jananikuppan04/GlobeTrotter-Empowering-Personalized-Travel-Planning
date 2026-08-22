@@ -22,7 +22,7 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
   const StatusIcon = statusIcons[trip.status] || Clock;
 
   return (
-    <div className="glass-card rounded-2xl overflow-hidden group flex flex-col h-full border border-gray-800/80 hover:border-indigo-500/50 transition-all duration-300">
+    <div className="glass-card rounded-2xl overflow-hidden group flex flex-col h-full border border-[var(--border-color)] hover:border-indigo-500/50 transition-all duration-300 shadow-md">
       
       {/* Cover Image & Status Tag */}
       <div className="relative h-44 w-full overflow-hidden bg-gray-900">
@@ -31,10 +31,10 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
           alt={trip.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent opacity-80" />
 
         {/* Status Badge */}
-        <div className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-md shadow-md capitalize shadow-black/40 ${statusColors[trip.status]}">
+        <div className={`absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-md shadow-md capitalize ${statusColors[trip.status]}`}>
           <StatusIcon className="w-3.5 h-3.5" />
           <span>{trip.status}</span>
         </div>
@@ -47,8 +47,8 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
         )}
 
         {/* Date Range Badge */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-gray-200">
-          <div className="flex items-center gap-1.5 bg-gray-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-gray-700/60">
+        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white">
+          <div className="flex items-center gap-1.5 bg-gray-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-gray-700/60 font-medium">
             <Calendar className="w-3.5 h-3.5 text-indigo-400" />
             <span>{trip.startDate} → {trip.endDate}</span>
           </div>
@@ -63,11 +63,11 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
       {/* Card Content */}
       <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
         <div>
-          <h3 className="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors line-clamp-1">
+          <h3 className="text-lg font-extrabold text-[var(--text-primary)] group-hover:text-indigo-500 transition-colors line-clamp-1">
             {trip.title}
           </h3>
           
-          <p className="text-xs text-gray-400 line-clamp-2 mt-1">
+          <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mt-1">
             {trip.description}
           </p>
 
@@ -80,15 +80,15 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
         </div>
 
         {/* Budget Progress Bar */}
-        <div className="bg-gray-900/70 p-3 rounded-xl border border-gray-800/80 space-y-1.5">
+        <div className="bg-[var(--bg-input)] p-3 rounded-xl border border-[var(--border-color)] space-y-1.5">
           <div className="flex justify-between text-xs font-semibold">
-            <span className="text-gray-400">Spent / Budget</span>
-            <span className={percentSpent > 90 ? 'text-rose-400 font-bold' : 'text-emerald-400'}>
+            <span className="text-[var(--text-muted)]">Spent / Budget</span>
+            <span className={percentSpent > 90 ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}>
               {formattedSpent} / {formattedBudget}
             </span>
           </div>
           
-          <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-gray-700/40 rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
                 percentSpent > 100
@@ -103,7 +103,7 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
         </div>
 
         {/* Action Buttons Footer */}
-        <div className="pt-2 border-t border-gray-800/60 flex items-center justify-between gap-2">
+        <div className="pt-2 border-t border-[var(--border-color)] flex items-center justify-between gap-2">
           <button
             onClick={() => onView(trip.id)}
             className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/20"
@@ -114,7 +114,7 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
 
           <button
             onClick={() => onBudget(trip.id)}
-            className="flex items-center justify-center p-2 rounded-xl text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 transition-colors"
+            className="flex items-center justify-center p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] bg-[var(--bg-input)] hover:bg-emerald-500/10 transition-colors"
             title="Budget Analytics"
           >
             <PieChart className="w-4 h-4 text-emerald-400" />
@@ -122,7 +122,7 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
 
           <button
             onClick={() => onCalendar(trip.id)}
-            className="flex items-center justify-center p-2 rounded-xl text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 transition-colors"
+            className="flex items-center justify-center p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] bg-[var(--bg-input)] hover:bg-sky-500/10 transition-colors"
             title="Calendar View"
           >
             <Calendar className="w-4 h-4 text-sky-400" />
@@ -130,7 +130,7 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
 
           <button
             onClick={() => onShare(trip)}
-            className="flex items-center justify-center p-2 rounded-xl text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 transition-colors"
+            className="flex items-center justify-center p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] bg-[var(--bg-input)] hover:bg-amber-500/10 transition-colors"
             title="Share Trip"
           >
             <Share2 className="w-4 h-4 text-amber-400" />
@@ -139,7 +139,7 @@ export default function TripCard({ trip, onView, onBudget, onCalendar, onDelete,
           {onDelete && (
             <button
               onClick={() => onDelete(trip.id)}
-              className="flex items-center justify-center p-2 rounded-xl text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+              className="flex items-center justify-center p-2 rounded-xl text-[var(--text-muted)] hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
               title="Delete Trip"
             >
               <Trash2 className="w-4 h-4" />
