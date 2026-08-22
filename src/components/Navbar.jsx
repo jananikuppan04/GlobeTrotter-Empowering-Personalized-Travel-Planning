@@ -3,7 +3,6 @@ import {
   Compass,
   MapPin,
   Calendar,
-  PieChart,
   Users,
   ShieldCheck,
   PlusCircle,
@@ -52,13 +51,14 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
     setIsProfileMenuOpen(false);
   };
 
+  // Simple, easy-to-understand navigation labels
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Compass },
+    { id: 'dashboard', label: 'Home', icon: Compass },
     { id: 'my-trips', label: 'My Trips', icon: Briefcase },
-    { id: 'cities', label: 'Explore Cities', icon: MapPin },
-    { id: 'activities', label: 'Activities', icon: Sparkles },
-    { id: 'calendar', label: 'Calendar', icon: Calendar },
-    { id: 'community', label: 'Community', icon: Users },
+    { id: 'cities', label: 'Find Cities', icon: MapPin },
+    { id: 'activities', label: 'Things To Do', icon: Sparkles },
+    { id: 'calendar', label: 'Trip Calendar', icon: Calendar },
+    { id: 'community', label: 'Shared Trips', icon: Users },
   ];
 
   if (currentUser?.role === 'admin') {
@@ -116,14 +116,14 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white gradient-bg hover:opacity-90 transition-all shadow-md shadow-indigo-500/25 active:scale-95 whitespace-nowrap shrink-0"
             >
               <PlusCircle className="w-4 h-4 shrink-0" />
-              <span className="whitespace-nowrap">Plan New Trip</span>
+              <span className="whitespace-nowrap">+ Create New Trip</span>
             </button>
 
             {/* Theme Toggle Button */}
             <button
               onClick={handleToggleTheme}
               className="flex items-center justify-center p-2 rounded-xl bg-[var(--bg-input)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-indigo-500 transition-all shrink-0"
-              title={`Switch Theme`}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {theme === 'dark' ? (
                 <Sun className="w-4 h-4 text-amber-400" />
@@ -191,7 +191,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                         className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]"
                       >
                         <User className="w-4 h-4 text-indigo-400" />
-                        <span>My Profile & Settings</span>
+                        <span>Profile & Settings</span>
                       </button>
 
                       <button
@@ -202,11 +202,11 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                         className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]"
                       >
                         <Briefcase className="w-4 h-4 text-sky-400" />
-                        <span>My Saved Trips</span>
+                        <span>My Trips</span>
                       </button>
 
                       <div className="px-4 py-1.5 text-[9px] font-extrabold text-[var(--text-muted)] uppercase tracking-wider">
-                        Quick Demo Switcher
+                        Switch Account Demo
                       </div>
                       <button
                         onClick={() => handleQuickDemoSwitch('user')}
@@ -214,7 +214,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                           currentUser.role === 'user' ? 'text-indigo-400 font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                         }`}
                       >
-                        <span>Demo Traveler</span>
+                        <span>Traveler View</span>
                         {currentUser.role === 'user' && <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>}
                       </button>
                       <button
@@ -223,7 +223,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuthModal, onOpe
                           currentUser.role === 'admin' ? 'text-amber-400 font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                         }`}
                       >
-                        <span>Demo Admin</span>
+                        <span>Admin View</span>
                         {currentUser.role === 'admin' && <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>}
                       </button>
                     </div>

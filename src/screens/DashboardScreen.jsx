@@ -64,7 +64,7 @@ export default function DashboardScreen({
   return (
     <div className="space-y-10 pb-16">
       
-      {/* Hero Banner with Search */}
+      {/* Hero Banner */}
       <div className="relative rounded-3xl overflow-hidden border border-[var(--border-color)] shadow-2xl bg-gray-950">
         <div className="absolute inset-0">
           <img
@@ -82,12 +82,12 @@ export default function DashboardScreen({
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight">
-            Dream, Design & Explore <br />
-            <span className="gradient-text">Your Next World Journey</span>
+            Plan Your Next Trip <br />
+            <span className="gradient-text">Simple, Easy & Fun</span>
           </h1>
 
-          <p className="text-sm sm:text-base text-gray-200 font-medium">
-            Build multi-city day-by-day itineraries, estimate real-time trip costs, organize activities, and share memorable journeys with a global community.
+          <p className="text-sm sm:text-base text-gray-200 font-medium leading-relaxed">
+            Pick your cities, add daily fun activities, check costs automatically, and share your travel plan with friends.
           </p>
 
           {/* Quick Search & Create Row */}
@@ -96,7 +96,7 @@ export default function DashboardScreen({
               <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search cities, countries (e.g. Paris, Japan)..."
+                placeholder="Search for a city or country (e.g. Paris, Japan)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 bg-gray-950/90 backdrop-blur-md border border-gray-700/80 rounded-xl text-sm text-white focus:border-indigo-500 focus:outline-none shadow-lg"
@@ -105,16 +105,16 @@ export default function DashboardScreen({
 
             <button
               onClick={() => onOpenCreateTrip()}
-              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white gradient-bg hover:opacity-95 transition-all shadow-lg shadow-indigo-600/30"
+              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white gradient-bg hover:opacity-95 transition-all shadow-lg shadow-indigo-600/30 whitespace-nowrap"
             >
               <PlusCircle className="w-5 h-5" />
-              <span>Plan New Trip</span>
+              <span>+ Create New Trip</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Metric Highlights */}
+      {/* Simple Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="glass-panel p-5 rounded-2xl border border-[var(--border-color)] flex items-center gap-4 shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center">
@@ -122,7 +122,7 @@ export default function DashboardScreen({
           </div>
           <div>
             <p className="text-2xl font-black text-[var(--text-primary)]">{userTrips.length}</p>
-            <p className="text-xs text-[var(--text-secondary)] font-semibold">My Planned Trips</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">My Trips</p>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default function DashboardScreen({
           </div>
           <div>
             <p className="text-2xl font-black text-[var(--text-primary)]">{destinations.length}</p>
-            <p className="text-xs text-[var(--text-secondary)] font-semibold">Global Cities</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">Cities Available</p>
           </div>
         </div>
 
@@ -144,7 +144,7 @@ export default function DashboardScreen({
             <p className="text-2xl font-black text-[var(--text-primary)]">
               {db.formatCurrency(userTrips.reduce((acc, t) => acc + (t.totalBudget || 0), 0))}
             </p>
-            <p className="text-xs text-[var(--text-secondary)] font-semibold">Budget Managed</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">Total Planned Cost</p>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ export default function DashboardScreen({
           </div>
           <div>
             <p className="text-2xl font-black text-[var(--text-primary)]">24</p>
-            <p className="text-xs text-[var(--text-secondary)] font-semibold">Community Shares</p>
+            <p className="text-xs text-[var(--text-secondary)] font-semibold">Shared Plans</p>
           </div>
         </div>
       </div>
@@ -167,14 +167,14 @@ export default function DashboardScreen({
               <Compass className="w-5 h-5 text-indigo-500" />
               <span>Your Recent Trips</span>
             </h2>
-            <p className="text-xs text-[var(--text-muted)]">Continue building your day-by-day itineraries</p>
+            <p className="text-xs text-[var(--text-muted)]">Easily manage your day-by-day plans</p>
           </div>
 
           <button
             onClick={() => setActiveTab('my-trips')}
             className="flex items-center gap-1 text-xs font-bold text-indigo-500 hover:text-indigo-600 transition-colors"
           >
-            <span>View All ({userTrips.length})</span>
+            <span>See All ({userTrips.length})</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -200,28 +200,28 @@ export default function DashboardScreen({
               onClick={() => onOpenCreateTrip()}
               className="px-4 py-2 rounded-xl text-xs font-bold text-white gradient-bg"
             >
-              Create Your First Itinerary
+              + Start Planning A Trip
             </button>
           </div>
         )}
       </div>
 
-      {/* Top Regional Selections / Recommended Destinations */}
+      {/* Recommended Destinations */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-extrabold text-[var(--text-primary)] flex items-center gap-2">
               <MapPin className="w-5 h-5 text-sky-400" />
-              <span>Top Regional Selections</span>
+              <span>Popular Cities to Visit</span>
             </h2>
-            <p className="text-xs text-[var(--text-muted)]">Handpicked global cities with average daily cost indexes</p>
+            <p className="text-xs text-[var(--text-muted)]">Check average daily costs and add cities to your trip</p>
           </div>
 
           <button
             onClick={() => setActiveTab('cities')}
             className="flex items-center gap-1 text-xs font-bold text-sky-500 hover:text-sky-600 transition-colors"
           >
-            <span>Explore All Cities</span>
+            <span>Browse All Cities</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -246,16 +246,16 @@ export default function DashboardScreen({
           <div>
             <h2 className="text-xl font-extrabold text-[var(--text-primary)] flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-400" />
-              <span>Featured Experiences & Activities</span>
+              <span>Fun Things To Do</span>
             </h2>
-            <p className="text-xs text-[var(--text-muted)]">Enrich your journey with top-rated local activities</p>
+            <p className="text-xs text-[var(--text-muted)]">Tours, food, nature, and cultural experiences</p>
           </div>
 
           <button
             onClick={() => setActiveTab('activities')}
             className="flex items-center gap-1 text-xs font-bold text-amber-500 hover:text-amber-600 transition-colors"
           >
-            <span>Browse Activity Library</span>
+            <span>Explore All Activities</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
